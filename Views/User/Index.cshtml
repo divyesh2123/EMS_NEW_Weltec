@@ -25,13 +25,31 @@
     <section class="content">
       <div class="container-fluid">
 
+    @if(string.IsNullOrEmpty(Convert.ToString(TempData["message"]) ) == false)
+    {
+   <div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success!</strong> @TempData["message"]
+  </div>
+    }
+
           <table class="table">
 
              @foreach(var t in Model)
             {
-                <tr><td>@t.Name</td> <td>@t.FullName</td>  </tr>
+                <tr><td>@t.Name</td> <td>@t.FullName</td>
+                    
+                <td><a asp-action="DeleteInfo" asp-controller="User"
+                asp-route-id="@t.Id"
+                class="btn btn-primary" >Delete</a></td>
+                </tr>
 
                 
+            }
+
+            @if(Model.Count == 0)
+            {
+                <div> @ViewData["Message"] </div>
             }
 
             

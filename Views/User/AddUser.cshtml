@@ -1,0 +1,26 @@
+﻿@model UserViewModel
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<form asp-controller="USer" asp-action="AddUser" method="post">
+
+      <div class="mb-3 mt-3">
+    <label for="email" class="form-label">Name:</label>
+    <input type="text" class="form-control" id="Name" placeholder="Enter Name" 
+    name="Name" asp-for="Name">
+  </div>
+
+   <div class="mb-3 mt-3">
+    <label for="city" class="form-label">City:</label>
+    <input type="text" class="form-control" id="city" placeholder="Enter City" 
+    name="City" asp-for="City">
+  </div>
+
+
+  <input type="submit" value="save"  class="btn-primary btn"/>
+
+
+
+</form>
