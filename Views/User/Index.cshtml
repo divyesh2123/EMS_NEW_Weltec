@@ -25,11 +25,16 @@
     <section class="content">
       <div class="container-fluid">
 
-    @if(string.IsNullOrEmpty(Convert.ToString(TempData["message"]) ) == false)
+        @{
+            var d = TempData["message"];
+            TempData.Keep("message");
+        }
+
+    @if(string.IsNullOrEmpty(Convert.ToString(d) ) == false)
     {
    <div class="alert alert-success alert-dismissible">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Success!</strong> @TempData["message"]
+    <strong>Success!</strong> d
   </div>
     }
 
@@ -39,9 +44,17 @@
             {
                 <tr><td>@t.Name</td> <td>@t.FullName</td>
                     
-                <td><a asp-action="DeleteInfo" asp-controller="User"
+                <td>
+                    <a asp-action="DeleteInfo" asp-controller="User"
                 asp-route-id="@t.Id"
-                class="btn btn-primary" >Delete</a></td>
+                class="btn btn-primary" >Delete</a>
+
+                     <a asp-action="AddUser" asp-controller="User"
+                asp-route-id="@t.Id"
+                class="btn btn-primary" >Edit</a>
+            
+            
+            </td>
                 </tr>
 
                 

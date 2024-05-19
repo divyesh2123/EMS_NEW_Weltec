@@ -4,8 +4,10 @@
     Layout = "_AdminLayout";
 }
 
+@ViewBag.Title
 <form asp-controller="USer" asp-action="AddUser" method="post">
 
+    <input type="hidden"  asp-for="Id"/>
       <div class="mb-3 mt-3">
     <label for="email" class="form-label">Name:</label>
     <input type="text" class="form-control" id="Name" placeholder="Enter Name" 
