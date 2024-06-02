@@ -9,10 +9,11 @@ namespace EMS_NEW_Weltec.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IUserService userService;
-        public UserController()
+        IUserService _userService;
+       
+        public UserController(IUserService userService)
         {
-            userService = new UserService();
+            _userService=userService;   
         }
 
         public IActionResult AddUser(int? id)
@@ -21,7 +22,7 @@ namespace EMS_NEW_Weltec.Controllers
             {
                 ViewBag.Title = "Edit User";
 
-                return View(userService.GetUserById(id.Value));
+                return View(_userService.GetUserById(id.Value));
 
             }
 
@@ -33,7 +34,7 @@ namespace EMS_NEW_Weltec.Controllers
         [HttpPost]
         public IActionResult AddUser(UserViewModel userViewModel)
         {
-            userService.AddUser(userViewModel);
+            _userService.AddUser(userViewModel);
             if (userViewModel.Id > 0)
             {
                 TempData["message"] = "User updated suc...";
@@ -47,7 +48,7 @@ namespace EMS_NEW_Weltec.Controllers
 
         public IActionResult Index()
         {
-            var p = userService.GetUsers();
+            var p = _userService.GetUsers();
 
             if (p.Count == 0)
             {
@@ -61,7 +62,7 @@ namespace EMS_NEW_Weltec.Controllers
 
         public IActionResult DeleteInfo(int id)
         {
-            var d = userService.DeleteUser(id);
+            var d = _userService.DeleteUser(id);
 
             TempData["message"] = "User Deleted suc...";
 

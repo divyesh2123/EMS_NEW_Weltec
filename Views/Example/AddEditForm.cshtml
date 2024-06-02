@@ -1,0 +1,32 @@
+﻿     
+@model UserViewModel
+
+@{
+    Layout = null;
+
+}
+
+<form asp-action="SaveUser" asp-controller="Example" method="post" onsubmit="return jQueryAjaxPost(this);">
+
+
+   
+
+       <div class="form-group">
+                <label for="batch">Name</label>
+                <input type="text" class="form-control" id="Name" placeholder="Name" asp-for="Name">
+           </div>
+
+                <div class="form-group">
+                <label for="batch">City</label>
+                <input type="text" class="form-control" id="City" placeholder="City" asp-for="City">
+            </div>
+
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="offcanvas">Cancel</button>
+
+            </div>
+
+</form>

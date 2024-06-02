@@ -1,9 +1,18 @@
+using EMS.BussinessService.Concreate;
+using EMS.BussinessService.Interface;
+using EMS_New.Repository.Concreate;
+using EMS_New.Repository.Interface;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IUserRepositroy, UserRepositroy>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

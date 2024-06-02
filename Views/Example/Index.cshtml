@@ -32,7 +32,7 @@
 
 
                         <div class="float-right">
-                            <a class="btn btn-success" onclick="showInPopup('@Url.Action("AddEditBatch","CityMaster")',false)"><i class="fa fa-plus"></i> Add New</a>
+                            <a class="btn btn-success" onclick="showInPopup('@Url.Action("AddEditUser","Example")',false)"><i class="fa fa-plus"></i> Add New</a>
 
                         </div>
 
@@ -65,6 +65,25 @@
     <!-- /.container-fluid -->
 </section>
 
+<div class="offcanvas offcanvas-end" id="demo">
+
+
+    <div class="offcanvas-header card-header bg-primary"  id="title">
+
+
+
+        <h5 class="modal-title" id="title">Fees Type</h5>
+        <button type="button" class="close" data-bs-dismiss="offcanvas" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+    <div class="offcanvas-body" id="body">
+    </div>
+
+
+</div>
+
 @section scripts {
 
     <script>
@@ -72,21 +91,24 @@
           var  dataTable;
 
         $(document).ready(function () {
-            dataTable = $("#user").DataTable({
+          dataTable = $("#user").DataTable({
                 "ajax": {
                     "url": "/Example/GetData",
                     "type": "GET",
                     "datatype": "json"
                 },
                 "columns": [
-                    { "data": "name" },
                     { "data": "city" },
-                    {
-                        "data": "id",
+                    { "data": "name" },
+                     {
+                        "data": "id", "render": function (data) {
+                            return "<a class='btn btn-primary btn-sm' onclick=showInPopup('@Url.Action("AddEditForm","User")/" + data + "',true)><i class='fa fa-pencil'></i> Edit</a><a class='btn btn-danger btn-sm' style='margin-left:5px' onclick=Delete(" + data + ")><i class='fa fa-trash'></i> Delete</a>";
+                        },
                         "orderable": false,
                         "searchable": false,
                         "width": "150px"
                     }
+                    
 
                 ],
                 "language": {
@@ -95,6 +117,122 @@
                 }
             });
         });
+
+       
+
+        const showInPopup = (url1,isEdit)=>{
+
+               $.ajax({
+                type: 'GET',
+                url: url1,
+                success: function (res) {
+
+
+
+
+                    $('#body').html(res);
+
+                    if (!isEdit) {
+                        $('#title').html('Add User');
+
+                    }
+                    else {
+                        $('#title').html('Edit User');
+                    }
+
+                    var myOffcanvas = document.getElementById('demo')
+                    var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas)
+                    bsOffcanvas.show()
+
+
+
+                },
+
+               
+            })
+
+        }
+
+       const   jQueryAjaxPost = form => {
+
+            
+            try {
+                $.ajax({
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        if (res.result) {
+
+                            $('#body').html('');
+                            $('#title').html('');
+
+                            var myOffcanvas = document.getElementById('demo')
+                            let openedCanvas = bootstrap.Offcanvas.getInstance(myOffcanvas);
+                            openedCanvas.hide();
+
+                            dataTable.ajax.reload();
+                            swal(res.message, {
+                                icon: "success",
+                            });
+                        }
+                       
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
+                //to prevent default form submit event
+                return false;
+            } catch (ex) {
+                console.log(ex)
+            }
+        }
+
+         function Delete(id) {
+
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this record!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                showCancelButton: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("DeleteInfo","Example")/' + id,
+                            success: function (data) {
+                                if (data.result == true) {
+                                    dataTable.ajax.reload();
+
+                                    swal(data.message, {
+                                        icon: "success",
+                                    });
+                                }
+
+                                else {
+
+                                    swal("Error");
+                                }
+                            }
+
+                        });
+
+
+
+                    }
+                });
+
+        }
+
+
     
     </script>
 }
